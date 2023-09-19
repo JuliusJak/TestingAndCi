@@ -9,7 +9,6 @@ public class TestingAndCiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TestingAndCiApplication.class, args);
 
-		//hello world
 	}
 
 }
