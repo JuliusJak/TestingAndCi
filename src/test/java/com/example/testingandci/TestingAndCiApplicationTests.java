@@ -1,17 +1,18 @@
 package com.example.testingandci;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.example.testingandci.repository.IAccountRepository;
 import com.example.testingandci.service.AccountService;
-import org.junit.Before;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class TestingAndCiApplicationTests {
 
 	@Test
@@ -23,11 +24,6 @@ class TestingAndCiApplicationTests {
 
 	@InjectMocks
 	private AccountService accountService;
-
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-	}
 
 	@Test
 	public void testDeleteAccount() {
