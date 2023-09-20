@@ -22,7 +22,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public void deleteAccount(Long accountId) {
-
+        repository.deleteById(accountId);
     }
 
     @Override

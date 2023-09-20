@@ -3,8 +3,7 @@ package com.example.testingandci.controller;
 import com.example.testingandci.model.Account;
 import com.example.testingandci.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountController {
@@ -20,5 +19,9 @@ public class AccountController {
                 .paymentInfo(112)
                 .build();
         return accountService.saveAccount(account);
+    }
+    @DeleteMapping("/delete/{id}")
+    public void deleteAccount(@PathVariable long id) {
+        accountService.deleteAccount(id);
     }
 }
