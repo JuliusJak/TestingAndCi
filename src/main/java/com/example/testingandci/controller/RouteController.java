@@ -26,6 +26,18 @@ public class RouteController {
             @RequestParam("estimatedDeparture") String estimatedDeparture,
             @RequestParam("ticketPrice") int ticketPrice) {
 
+        if (arrivalPoint.isEmpty()
+                || departurePoint.isEmpty()
+                || estimatedArrival.isEmpty()
+                || transportationCompany.isEmpty()
+                || typeOfTransport.isEmpty()
+                || estimatedDeparture.isEmpty()) {
+            throw new IllegalArgumentException("String parameters must not be empty");
+        }
+
+        if (discountPrice <= 0 || ticketPrice <= 0) {
+            throw new IllegalArgumentException("Discount price and ticket price can not be a negative number or 0");
+        }
         int finalTicketPrice = (int) (ticketPrice * discountPrice);
 
         TransportationRoute transportationRoute = TransportationRoute.builder()
