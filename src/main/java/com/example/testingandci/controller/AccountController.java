@@ -14,12 +14,17 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
     @PostMapping("create")
-    public Account saveAccount() {
+    public Account saveAccount(
+            @RequestParam("username") String username,
+            @RequestParam("contactInfo") String contactInfo,
+            @RequestParam("accountType") String accountType,
+            @RequestParam("paymentInfo") int paymentInfo) {
+
         Account account = Account.builder()
-                .username("Josef")
-                .contactInfo("112")
-                .accountType("ADMIN")
-                .paymentInfo(112)
+                .username(username)
+                .contactInfo(contactInfo)
+                .accountType(accountType)
+                .paymentInfo(paymentInfo)
                 .build();
         return accountService.saveAccount(account);
     }
