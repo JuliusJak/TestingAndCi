@@ -16,16 +16,27 @@ public class RouteController {
     private TransportationRouteService transportationRouteService;
 
     @PostMapping("create")
-    public TransportationRoute createRoute() {
+    public TransportationRoute createRoute(
+            @RequestParam("arrivalPoint") String arrivalPoint,
+            @RequestParam("departurePoint") String departurePoint,
+            @RequestParam("discountPrice") double discountPrice,
+            @RequestParam("estimatedArrival") String estimatedArrival,
+            @RequestParam("transportationCompany") String transportationCompany,
+            @RequestParam("typeOfTransport") String typeOfTransport,
+            @RequestParam("estimatedDeparture") String estimatedDeparture,
+            @RequestParam("ticketPrice") int ticketPrice) {
+
+        int finalTicketPrice = (int) (ticketPrice * discountPrice);
+
         TransportationRoute transportationRoute = TransportationRoute.builder()
-                .arrivalPoint("stockholm")
-                .departurePoint("malmo")
-                .discountPrice(0)
-                .estimatedArrival("11:15")
-                .transportationCompany("Viking line")
-                .typeOfTransport("train")
-                .estimatedDeparture("08:00")
-                .ticketPrice(100)
+                .arrivalPoint(arrivalPoint)
+                .departurePoint(departurePoint)
+                .discountPrice(discountPrice)
+                .estimatedArrival(estimatedArrival)
+                .transportationCompany(transportationCompany)
+                .typeOfTransport(typeOfTransport)
+                .estimatedDeparture(estimatedDeparture)
+                .ticketPrice(finalTicketPrice)
                 .build();
         return transportationRouteService.createNewRoute(transportationRoute);
     }
