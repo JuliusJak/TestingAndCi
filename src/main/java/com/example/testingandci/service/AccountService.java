@@ -17,7 +17,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account updateAccount(Account oldAccount) {
-        return null;
+        return repository.save(oldAccount);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account fetchedAccount(Long accountId) {
-        return null;
+        return repository.findById(accountId).orElse(null);
     }
 }

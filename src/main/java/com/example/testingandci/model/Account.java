@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 
 @Entity
 @Data
@@ -23,6 +22,5 @@ public class Account {
     private String username;
     private String contactInfo;
     private int paymentInfo;
-    //    Tickets you bought but haven't used yet
     private String accountType;
 }
