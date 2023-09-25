@@ -2,6 +2,7 @@ package com.example.testingandci;
 
 import com.example.testingandci.controller.AccountController;
 import com.example.testingandci.model.Account;
+import com.example.testingandci.service.IAccountService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import com.example.testingandci.repository.IAccountRepository;
 import com.example.testingandci.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,7 +28,8 @@ class TestingAndCiApplicationTests {
 
 	@Mock
 	private IAccountRepository repository;
-
+	@Mock
+	private AccountService accountServiceMocked;
 	@InjectMocks
 	private AccountService accountService;
 
@@ -128,5 +131,29 @@ class TestingAndCiApplicationTests {
 
 
 	//AccountController Tests
+
+	@Test
+	public void testSaveAccount() {
+
+		String username = "John";
+		String contactInfo = "123";
+		String accountType = "USER";
+		int paymentInfo = 100;
+
+		Account mockAccount = new Account();
+		mockAccount.setUsername(username);
+		mockAccount.setContactInfo(contactInfo);
+		mockAccount.setAccountType(accountType);
+		mockAccount.setPaymentInfo(paymentInfo);
+
+		when(accountServiceMocked.saveAccount(any(Account.class))).thenReturn(mockAccount);
+
+		Account response = accountController.saveAccount(username, contactInfo, accountType, paymentInfo);
+
+		assertNotNull(response);
+		assertEquals(mockAccount, response);
+
+		verify(accountServiceMocked, times(1)).saveAccount(any(Account.class));
+	}
 
 }
