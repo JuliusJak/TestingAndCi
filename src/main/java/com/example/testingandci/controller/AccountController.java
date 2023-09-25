@@ -3,6 +3,7 @@ package com.example.testingandci.controller;
 import com.example.testingandci.model.Account;
 import com.example.testingandci.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,26 +39,41 @@ public class AccountController {
         return accountService.saveAccount(account);
     }
     @GetMapping("get/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable long id) {
+    public ResponseEntity<Account> getAccountById(@PathVariable long id) throws AccountNotFoundException {
         Account account = accountService.fetchedAccount(id);
         if (account != null) {
             return ResponseEntity.ok(account);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new AccountNotFoundException("Account with ID " + id + " not found");
         }
     }
     @PatchMapping("update/{id}")
-    public Account updateAccount(@PathVariable long id)
+    public Account updateAccount(
+            @PathVariable long id,
+            @RequestParam("username") String username,
+            @RequestParam("contactInfo") String contactInfo,
+            @RequestParam("accountType") String accountType,
+            @RequestParam("paymentInfo") int paymentInfo)
             throws AccountNotFoundException {
         Account existingAccount = accountService.fetchedAccount(id);
         if (existingAccount == null) {
             throw new AccountNotFoundException("Account with ID " + id + " not found");
         }
 
-        existingAccount.setUsername("Adam");
-        existingAccount.setContactInfo("321");
-        existingAccount.setAccountType("USER");
-        existingAccount.setPaymentInfo(999);
+        if (!username.isEmpty()) {
+            existingAccount.setUsername(username);
+        }
+        if (!contactInfo.isEmpty()) {
+            existingAccount.setContactInfo(contactInfo);
+        }
+        if (!accountType.isEmpty()) {
+            existingAccount.setAccountType(accountType);
+        }
+        if (paymentInfo > 0) {
+            existingAccount.setPaymentInfo(paymentInfo);
+        } else {
+            throw new IllegalArgumentException("PaymentInfo can not be a negative number or 0");
+        }
 
         return accountService.saveAccount(existingAccount);
     }

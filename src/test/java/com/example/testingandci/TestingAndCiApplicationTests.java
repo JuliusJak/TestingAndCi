@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
+import javax.security.auth.login.AccountNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -30,6 +32,8 @@ class TestingAndCiApplicationTests {
 	private IAccountRepository repository;
 	@Mock
 	private AccountService accountServiceMocked;
+	@Mock
+	private IAccountService IAccountServiceMocked;
 	@InjectMocks
 	private AccountService accountService;
 
@@ -39,7 +43,7 @@ class TestingAndCiApplicationTests {
 
 	// AccountService Tests
 	@Test
-	public void testDeleteAccount() {
+	public void testDeleteAccountService() {
 		Long accountIdToDelete = 1L;
 
 		accountService.deleteAccount(accountIdToDelete);
@@ -47,7 +51,7 @@ class TestingAndCiApplicationTests {
 		verify(repository, times(1)).deleteById(accountIdToDelete);
 	}
 	@Test
-	public void saveAccount(){
+	public void testSaveAccountService(){
 		Account mockAccount = Account.builder()
 				.id(1L)
 				.username("John Doe")
@@ -72,7 +76,7 @@ class TestingAndCiApplicationTests {
 		assertEquals(mockAccount, savedAccount);
 	}
 	@Test
-	public void testFetchedAccount() {
+	public void testFetchedAccountService() {
 
 		Long accountId = 1L;
 		Account mockAccount = new Account();
@@ -104,7 +108,7 @@ class TestingAndCiApplicationTests {
 	}
 
 	@Test
-	public void testUpdateAccount() {
+	public void testUpdateAccountService() {
 
 		Account oldAccount = Account.builder()
 				.id(1L)
@@ -133,7 +137,7 @@ class TestingAndCiApplicationTests {
 	//AccountController Tests
 
 	@Test
-	public void testSaveAccount() {
+	public void testSaveAccountController() {
 
 		String username = "John";
 		String contactInfo = "123";
@@ -155,5 +159,56 @@ class TestingAndCiApplicationTests {
 
 		verify(accountServiceMocked, times(1)).saveAccount(any(Account.class));
 	}
+
+	@Test
+	public void testFetchedAccountController() throws AccountNotFoundException {
+		long accountId = 1L;
+		Account mockAccount = new Account();
+		mockAccount.setUsername("John");
+
+		when(accountServiceMocked.fetchedAccount(accountId)).thenReturn(mockAccount);
+
+		ResponseEntity<Account> response = accountController.getAccountById(accountId);
+
+		assertNotNull(response);
+		assertEquals(200, response.getStatusCode().value());
+		assertNotNull(response.getBody());
+		assertEquals(mockAccount, response.getBody());
+
+		verify(accountServiceMocked, times(1)).fetchedAccount(accountId);
+	}
+
+	@Test
+	public void testUpdateAccount() throws AccountNotFoundException {
+
+		Long accountId = 1L;
+		String username = "John";
+		String contactInfo = "123";
+		String accountType = "USER";
+		int paymentInfo = 100;
+
+		Account existingAccount = Account.builder()
+				.id(1L)
+				.username("John")
+				.contactInfo("123")
+				.accountType("USER")
+				.paymentInfo(100)
+				.build();
+		when(accountServiceMocked.fetchedAccount(1L)).thenReturn(existingAccount);
+
+		Account updatedAccount = accountController.getAccountById(accountId).getBody();
+
+		// Verify the updated account
+		assertNotNull(updatedAccount);
+		assertEquals(accountId, updatedAccount.getId());
+		assertEquals(username, updatedAccount.getUsername());
+		assertEquals(contactInfo, updatedAccount.getContactInfo());
+		assertEquals(accountType, updatedAccount.getAccountType());
+		assertEquals(paymentInfo, updatedAccount.getPaymentInfo());
+
+		// Verify that the service method was called with the correct arguments
+		verify(accountServiceMocked, times(1)).fetchedAccount(accountId);
+	}
+
 
 }
