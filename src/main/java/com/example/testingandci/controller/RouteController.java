@@ -22,7 +22,7 @@ public class RouteController {
                 .departurePoint("malmo")
                 .discountPrice(0)
                 .estimatedArrival("11:15")
-                .transportationCompany("SJ")
+                .transportationCompany("Viking line")
                 .typeOfTransport("train")
                 .estimatedDeparture("08:00")
                 .ticketPrice(100)
@@ -34,7 +34,12 @@ public class RouteController {
         List<TransportationRoute> routes = transportationRouteService.fetchAllRoutes();
         return ResponseEntity.ok(routes);
     }
-
+    @GetMapping("get/supplier")
+    public ResponseEntity<List<TransportationRoute>> getRoutesByTransportationCompany(
+            @RequestParam("transportationCompany") String transportationCompany) {
+        List<TransportationRoute> routes = transportationRouteService.getRoutesByTransportationCompany(transportationCompany);
+        return ResponseEntity.ok(routes);
+    }
     @GetMapping("get/{id}")
     public ResponseEntity<TransportationRoute> getAccountById(@PathVariable long id) {
         TransportationRoute transportationRoute = transportationRouteService.fetchRouteById(id);

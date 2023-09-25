@@ -22,6 +22,7 @@ public class TransportationRoute {
     private String estimatedDeparture;
     private String estimatedArrival;
     private int ticketPrice;
+
     private String transportationCompany;
     private double discountPrice;
 }

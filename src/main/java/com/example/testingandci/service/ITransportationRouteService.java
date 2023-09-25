@@ -9,6 +9,8 @@ public interface ITransportationRouteService {
     TransportationRoute updateRoute(TransportationRoute oldRoute);
 
     List<TransportationRoute> fetchAllRoutes();
+    List<TransportationRoute> getRoutesByTransportationCompany(String transportationCompany);
+
     TransportationRoute fetchRouteById(Long routeId);
 
     /*Create a new route*/

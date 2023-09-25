@@ -25,7 +25,10 @@ public class TransportationRouteService implements ITransportationRouteService {
     public List<TransportationRoute> fetchAllRoutes() {
         return repository.findAll();
     }
-
+    @Override
+    public List<TransportationRoute> getRoutesByTransportationCompany(String transportationCompany) {
+        return repository.findByTransportationCompany(transportationCompany);
+    }
     @Override
     public TransportationRoute createNewRoute(TransportationRoute newRoute) {
         return repository.save(newRoute);
