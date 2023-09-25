@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.AccountNotFoundException;
 
 @RestController
+@RequestMapping("account/")
 public class AccountController {
     @Autowired
     private AccountService accountService;
-    @PostMapping("/create/account")
+    @PostMapping("create")
     public Account saveAccount() {
         Account account = Account.builder()
                 .username("Josef")
@@ -22,7 +23,7 @@ public class AccountController {
                 .build();
         return accountService.saveAccount(account);
     }
-    @GetMapping("/get/account/{id}")
+    @GetMapping("get/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable long id) {
         Account account = accountService.fetchedAccount(id);
         if (account != null) {
@@ -31,7 +32,7 @@ public class AccountController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PatchMapping("/update/{id}")
+    @PatchMapping("update/{id}")
     public Account updateAccount(@PathVariable long id)
             throws AccountNotFoundException {
         Account existingAccount = accountService.fetchedAccount(id);
@@ -47,7 +48,7 @@ public class AccountController {
         return accountService.saveAccount(existingAccount);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public void deleteAccount(@PathVariable long id) {
         accountService.deleteAccount(id);
     }

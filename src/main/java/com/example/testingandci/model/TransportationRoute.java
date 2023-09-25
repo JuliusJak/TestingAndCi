@@ -12,14 +12,16 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransportationRoute {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long routeId;
+
     private String departurePoint;
     private String arrivalPoint;
     private String typeOfTransport;
     private String estimatedDeparture;
     private String estimatedArrival;
     private int ticketPrice;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String transportationCompany;
     private double discountPrice;
 }

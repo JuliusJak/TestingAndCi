@@ -12,16 +12,17 @@ public class ActiveBookingService implements IActiveBookingService{
 
     @Override
     public ActiveBookings fetchActiveBookingList(Long accountId) {
-        return null;
+        return repository.findById(accountId).orElse(null);
     }
 
     @Override
     public ActiveBookings createNewBooking(ActiveBookings activeBookings) {
-        return null;
+        return repository.save(activeBookings);
     }
 
     @Override
     public void deleteBooking(Long bookingId) {
+        repository.deleteById(bookingId);
 
     }
 }

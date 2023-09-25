@@ -13,17 +13,25 @@ public class TransportationRouteService implements ITransportationRouteService {
     ITransportationRouteRepository repository;
 
     @Override
-    public TransportationRoute updateRoute(Long accountId) {
-        return null;
+    public TransportationRoute updateRoute(TransportationRoute oldRoute) {
+        return repository.save(oldRoute);
     }
 
     @Override
+    public TransportationRoute fetchRouteById(Long routeId) {
+        return repository.findById(routeId).orElse(null);
+    }
+    @Override
     public List<TransportationRoute> fetchAllRoutes() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
     public TransportationRoute createNewRoute(TransportationRoute newRoute) {
-        return null;
+        return repository.save(newRoute);
+    }
+    @Override
+    public void deleteRoute(Long routeId) {
+        repository.deleteById(routeId);
     }
 }

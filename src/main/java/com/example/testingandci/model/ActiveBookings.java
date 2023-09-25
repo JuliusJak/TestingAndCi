@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ActiveBookings {
     @Id
-    private String username;
     private long routeId;
+    private String username;
 
 }

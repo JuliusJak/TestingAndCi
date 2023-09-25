@@ -6,12 +6,13 @@ import java.util.List;
 
 public interface ITransportationRouteService {
     /*Update eventual discount*/
-    TransportationRoute updateRoute(Long accountId);
+    TransportationRoute updateRoute(TransportationRoute oldRoute);
 
-    /*Fetch a list of routes from all the contractors*/
     List<TransportationRoute> fetchAllRoutes();
+    TransportationRoute fetchRouteById(Long routeId);
 
     /*Create a new route*/
     TransportationRoute createNewRoute(TransportationRoute newRoute);
 
+    void deleteRoute(Long routeId);
 }
