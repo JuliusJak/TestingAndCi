@@ -19,14 +19,23 @@ public class AccountController {
             @RequestParam("username") String username,
             @RequestParam("contactInfo") String contactInfo,
             @RequestParam("accountType") String accountType,
-            @RequestParam("paymentInfo") int paymentInfo) {
+            @RequestParam("paymentInfo") Integer paymentInfo) {
 
-        if (username.isEmpty()
+        if (username == null
+                || contactInfo == null
+                || accountType == null
+                || paymentInfo == null) {
+
+            throw new NullPointerException("Parameter can not be null");
+        }
+        else if (username.isEmpty()
                 || contactInfo.isEmpty()
                 || accountType.isEmpty()) {
+
             throw new IllegalArgumentException("All parameters must be provided");
-        } else if (paymentInfo < 0) {
-            throw new IllegalArgumentException("PaymentInfo can not be a negative number or 0");
+
+        } else if (paymentInfo <= 0) {
+            throw new IllegalArgumentException("PaymentInfo must be greater than 0");
         }
 
 
