@@ -16,8 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ActiveBookings {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long bookingId;
     private  long routeId;
     private  long userId;
-    private String username;
 
 }
