@@ -75,7 +75,6 @@ public class AccountServiceUnitTests {
 
         assertNotNull(result);
         assertEquals(mockAccount, result);
-        System.out.println(result);
 
         verify(repository, times(1)).findById(accountId);
 
@@ -87,7 +86,6 @@ public class AccountServiceUnitTests {
         result = accountService.fetchedAccount(accountId);
 
         assertNull(result);
-        System.out.println(result);
         verify(repository, times(2)).findById(accountId);
 
     }

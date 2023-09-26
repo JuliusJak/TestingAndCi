@@ -5,14 +5,16 @@ import com.example.testingandci.repository.IActiveBookingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ActiveBookingService implements IActiveBookingService{
     @Autowired
     IActiveBookingsRepository repository;
 
     @Override
-    public ActiveBookings fetchActiveBookingList(Long accountId) {
-        return repository.findById(accountId).orElse(null);
+    public List<ActiveBookings> fetchActiveBookingsByUserId(long userId) {
+        return repository.findAllByUserId(userId);
     }
 
     @Override

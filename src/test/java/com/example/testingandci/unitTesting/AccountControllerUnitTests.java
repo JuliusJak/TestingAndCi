@@ -65,13 +65,9 @@ public class AccountControllerUnitTests {
                     || contactInfo == null
                     || accountType == null
                     || paymentInfo == null){
-                assertThrows(NullPointerException.class, () -> {
-                    accountController.saveAccount(username, contactInfo, accountType, paymentInfo);
-                });
+                assertThrows(NullPointerException.class, () -> accountController.saveAccount(username, contactInfo, accountType, paymentInfo));
             } else {
-                assertThrows(IllegalArgumentException.class, () -> {
-                    accountController.saveAccount(username, contactInfo, accountType, paymentInfo);
-                });
+                assertThrows(IllegalArgumentException.class, () -> accountController.saveAccount(username, contactInfo, accountType, paymentInfo));
             }
         }
 
@@ -96,9 +92,7 @@ public class AccountControllerUnitTests {
                 //Account can not be found
                 when(accountServiceMocked.fetchedAccount(accountId)).thenReturn(null);
 
-                assertThrows(AccountNotFoundException.class, () -> {
-                    accountController.getAccountById(accountId);
-                });
+                assertThrows(AccountNotFoundException.class, () -> accountController.getAccountById(accountId));
             }
         }
 
@@ -134,9 +128,7 @@ public class AccountControllerUnitTests {
             } else {
                 when(accountServiceMocked.fetchedAccount(accountId)).thenReturn(null);
 
-                assertThrows(AccountNotFoundException.class, () -> {
-                    accountController.updateAccount(accountId, username, contactInfo, accountType, paymentInfo);
-                });
+                assertThrows(AccountNotFoundException.class, () -> accountController.updateAccount(accountId, username, contactInfo, accountType, paymentInfo));
             }
         }
 
