@@ -5,6 +5,8 @@ import com.example.testingandci.model.ActiveBookings;
 import com.example.testingandci.service.ActiveBookingService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -59,12 +62,14 @@ public class BookingControllerUnitTests {
         assertEquals(activeBookings, response.getBody());
     }
 
-    @Test
-    public void testDeleteAccountService() {
-        long userId = 1L;
-
-        bookingController.deleteBookingById(userId);
-
-        verify(activeBookingService, times(1)).deleteBooking(userId);
+    @ParameterizedTest
+    @CsvSource({"1", "2", "3", ","})
+    public void testDeleteBooking(Long id) {
+        if (id == null) {
+            assertThrows(NullPointerException.class, () -> bookingController.deleteBookingById(id));
+        } else {
+            bookingController.deleteBookingById(id);
+            verify(activeBookingService, times(1)).deleteBooking(id);
+        }
     }
 }

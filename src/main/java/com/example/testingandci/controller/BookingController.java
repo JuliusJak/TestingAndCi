@@ -40,8 +40,11 @@ public class BookingController {
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteBookingById(@PathVariable long id) {
-        activeBookingService.deleteBooking(id);
-    }
+    public void deleteBookingById(@PathVariable Long id) {
+        if (id == null){
+            throw new NullPointerException("parameter id can not be null");
+        } else {
+            activeBookingService.deleteBooking(id);
+        }    }
 
 }

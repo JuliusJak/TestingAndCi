@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -88,9 +89,11 @@ public class RouteController {
     }
     @DeleteMapping("delete")
     public void deleteRoute(@RequestParam Long id) {
-        routeService.deleteRoute(id);
+
         if (id == null){
             throw new NullPointerException("parameter id can not be null");
+        } else {
+            routeService.deleteRoute(id);
         }
     }
 

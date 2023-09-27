@@ -88,7 +88,11 @@ public class AccountController {
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteAccount(@PathVariable long id) {
-        accountService.deleteAccount(id);
+    public void deleteAccount(@PathVariable Long id) {
+        if (id == null){
+            throw new NullPointerException("parameter id can not be null");
+        } else {
+            accountService.deleteAccount(id);
+        }
     }
 }

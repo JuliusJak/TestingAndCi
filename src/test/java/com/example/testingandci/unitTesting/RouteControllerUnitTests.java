@@ -203,18 +203,17 @@ public class RouteControllerUnitTests {
     }
 
     @ParameterizedTest
-    @CsvSource({"1","2","3",","})
+    @CsvSource({"1","2",","})
     public void testDeleteRoute(Long userId) {
 
         if (userId == null){
             assertThrows(NullPointerException.class, () -> routeController.deleteRoute(userId));
-        } else {
-
-            routeController.deleteRoute(userId);
-
-            verify(routeService, times(1)).deleteRoute(userId);
-
+        } else if (userId < 0){
+            assertThrows(IllegalArgumentException.class, () -> routeController.deleteRoute(userId));
         }
-
+            else {
+            routeController.deleteRoute(userId);
+            verify(routeService, times(1)).deleteRoute(userId);
+        }
     }
 }
