@@ -1,6 +1,8 @@
 package com.example.testingandci.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +14,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentsHistory {
+public class PaymentHistory {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private  long paymentId;
+    private long accountId;
     private String username;
     private long routeId;
 }

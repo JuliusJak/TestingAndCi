@@ -63,7 +63,7 @@ public class RouteController {
                 .build();
         return routeService.createNewRoute(transportationRoute);
     }
-    @GetMapping("get")
+    @GetMapping("get/all")
     public ResponseEntity<List<TransportationRoute>> getAllRoutes() {
         List<TransportationRoute> routes = routeService.fetchAllRoutes();
         return ResponseEntity.ok(routes);
@@ -78,7 +78,7 @@ public class RouteController {
             return ResponseEntity.ok(routes);
         }
     }
-    @GetMapping("get")
+    @GetMapping("get/id")
     public ResponseEntity<TransportationRoute> getRouteById(@RequestParam Long id) {
         TransportationRoute transportationRoute = routeService.fetchRouteById(id);
         if (id == null) {

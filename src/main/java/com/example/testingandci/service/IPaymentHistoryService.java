@@ -1,8 +1,12 @@
 package com.example.testingandci.service;
 
-import com.example.testingandci.model.PaymentsHistory;
+import com.example.testingandci.model.PaymentHistory;
+
+import java.util.List;
 
 public interface IPaymentHistoryService {
-    /*Fetch object*/
-    PaymentsHistory paymentHistory(Long accountId);
+    List<PaymentHistory> fetchPaymentHistory(Long accountId);
+    PaymentHistory createPayment(PaymentHistory newPayment);
+
+
 }
