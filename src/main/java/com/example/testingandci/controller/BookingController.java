@@ -40,7 +40,7 @@ public class BookingController {
     }
 
     @DeleteMapping("delete/{id}")
-    public void deleteAccount(@PathVariable long id) {
+    public void deleteBookingById(@PathVariable long id) {
         activeBookingService.deleteBooking(id);
     }
 

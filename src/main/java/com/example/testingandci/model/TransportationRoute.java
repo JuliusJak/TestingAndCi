@@ -23,5 +23,4 @@ public class TransportationRoute {
     private int ticketPrice;
     private String transportationCompany;
     private double discountPrice;
-    private long bookedByUserId;
 }
