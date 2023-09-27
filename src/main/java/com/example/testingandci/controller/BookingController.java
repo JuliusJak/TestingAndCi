@@ -1,13 +1,8 @@
 package com.example.testingandci.controller;
 
-import com.example.testingandci.model.Account;
 import com.example.testingandci.model.ActiveBookings;
-import com.example.testingandci.model.PaymentHistory;
-import com.example.testingandci.service.AccountService;
 import com.example.testingandci.service.ActiveBookingService;
-import com.example.testingandci.service.PaymentHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,21 +15,8 @@ public class BookingController {
     @Autowired
     private ActiveBookingService activeBookingService;
     @Autowired
-    private PaymentHistoryService paymentHistoryService;
-    @Autowired
-    private AccountService accountService;
+    private  PaymentHistoryController paymentHistoryController;
 
-    public void createPayment(long userId, long routeId){
-
-        String username = accountService.fetchedAccount(userId).getUsername();
-
-        PaymentHistory newPayment = PaymentHistory.builder()
-                .accountId(userId)
-                .routeId(routeId)
-                .username(username)
-                .build();
-        paymentHistoryService.createPayment(newPayment);
-    }
     @PostMapping("create")
     public ActiveBookings createBooking(
             @RequestParam("userId") long userId,
@@ -47,7 +29,8 @@ public class BookingController {
                 .build();
 
         // if routeId != routes that exists or route is not currently available throw exception
-        createPayment(userId,routeId);
+        //add some edgecases
+        paymentHistoryController.autoCreatePayment(userId, routeId);
         return activeBookingService.createNewBooking(activeBookings);
     }
     @GetMapping("get/{userId}")

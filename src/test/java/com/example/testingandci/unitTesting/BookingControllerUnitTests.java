@@ -28,33 +28,9 @@ public class BookingControllerUnitTests {
 
     @Mock
     private ActiveBookingService activeBookingService;
-    @Mock
-    private PaymentHistoryService paymentHistoryService;
-    @Mock
-    private AccountService accountService;
     @InjectMocks
     private BookingController bookingController;
 
-
-    @Test
-    public void testCreatePayment() {
-
-        long userId = 1L;
-        long routeId = 2L;
-        String username = "testUser";
-        Account mockAccount = Account.builder()
-                .id(userId)
-                .username(username)
-                .build();
-
-        when(accountService.fetchedAccount(userId)).thenReturn(mockAccount);
-
-        bookingController.createPayment(userId, routeId);
-
-        verify(paymentHistoryService, times(1)).createPayment(argThat(paymentHistory -> paymentHistory.getAccountId() == userId
-                && paymentHistory.getRouteId() == routeId
-                && paymentHistory.getUsername().equals(username)));
-    }
     @Test
     public void testCreateBooking() {
         long userId = 1L;
