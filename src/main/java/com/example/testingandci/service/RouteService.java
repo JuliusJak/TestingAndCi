@@ -1,16 +1,16 @@
 package com.example.testingandci.service;
 
 import com.example.testingandci.model.TransportationRoute;
-import com.example.testingandci.repository.ITransportationRouteRepository;
+import com.example.testingandci.repository.IRouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TransportationRouteService implements ITransportationRouteService {
+public class RouteService implements ITransportationRouteService {
     @Autowired
-    ITransportationRouteRepository repository;
+    IRouteRepository repository;
 
     @Override
     public TransportationRoute updateRoute(TransportationRoute oldRoute) {

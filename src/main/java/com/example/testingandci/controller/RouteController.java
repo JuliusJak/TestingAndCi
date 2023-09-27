@@ -1,8 +1,7 @@
 package com.example.testingandci.controller;
 
-import com.example.testingandci.model.ActiveBookings;
 import com.example.testingandci.model.TransportationRoute;
-import com.example.testingandci.service.TransportationRouteService;
+import com.example.testingandci.service.RouteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,20 +12,31 @@ import java.util.List;
 @RequestMapping("route/")
 public class RouteController {
     @Autowired
-    private TransportationRouteService transportationRouteService;
+    private RouteService routeService;
 
     @PostMapping("create")
     public TransportationRoute createRoute(
             @RequestParam("arrivalPoint") String arrivalPoint,
             @RequestParam("departurePoint") String departurePoint,
-            @RequestParam("discountPrice") double discountPrice,
+            @RequestParam("discountPrice") Double discountPrice,
             @RequestParam("estimatedArrival") String estimatedArrival,
             @RequestParam("transportationCompany") String transportationCompany,
             @RequestParam("typeOfTransport") String typeOfTransport,
             @RequestParam("estimatedDeparture") String estimatedDeparture,
-            @RequestParam("ticketPrice") int ticketPrice) {
+            @RequestParam("ticketPrice") Integer ticketPrice) {
 
-        if (arrivalPoint.isEmpty()
+        if (arrivalPoint == null
+                || departurePoint == null
+                || discountPrice == null
+                || estimatedArrival == null
+                || transportationCompany == null
+                || typeOfTransport == null
+                || estimatedDeparture == null
+                || ticketPrice == null) {
+
+            throw new NullPointerException("Parameters can not be null");
+        }
+        else if (arrivalPoint.isEmpty()
                 || departurePoint.isEmpty()
                 || estimatedArrival.isEmpty()
                 || transportationCompany.isEmpty()
@@ -50,31 +60,38 @@ public class RouteController {
                 .estimatedDeparture(estimatedDeparture)
                 .ticketPrice(finalTicketPrice)
                 .build();
-        return transportationRouteService.createNewRoute(transportationRoute);
+        return routeService.createNewRoute(transportationRoute);
     }
     @GetMapping("get")
     public ResponseEntity<List<TransportationRoute>> getAllRoutes() {
-        List<TransportationRoute> routes = transportationRouteService.fetchAllRoutes();
+        List<TransportationRoute> routes = routeService.fetchAllRoutes();
         return ResponseEntity.ok(routes);
     }
     @GetMapping("get/supplier")
     public ResponseEntity<List<TransportationRoute>> getRoutesByTransportationCompany(
             @RequestParam("transportationCompany") String transportationCompany) {
-        List<TransportationRoute> routes = transportationRouteService.getRoutesByTransportationCompany(transportationCompany);
-        return ResponseEntity.ok(routes);
-    }
-    @GetMapping("get/{id}")
-    public ResponseEntity<TransportationRoute> getAccountById(@PathVariable long id) {
-        TransportationRoute transportationRoute = transportationRouteService.fetchRouteById(id);
-        if (transportationRoute != null) {
-            return ResponseEntity.ok(transportationRoute);
+        List<TransportationRoute> routes = routeService.getRoutesByTransportationCompany(transportationCompany);
+        if (transportationCompany == null || transportationCompany.isEmpty()){
+            throw new NullPointerException("transportationCompany can not be empty or null");
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(routes);
         }
     }
-    @DeleteMapping("delete/{id}")
-    public void deleteAccount(@PathVariable long id) {
-        transportationRouteService.deleteRoute(id);
+    @GetMapping("get")
+    public ResponseEntity<TransportationRoute> getRouteById(@RequestParam Long id) {
+        TransportationRoute transportationRoute = routeService.fetchRouteById(id);
+        if (id == null) {
+            throw new NullPointerException("parameter id can not be null");
+        } else {
+            return ResponseEntity.ok(transportationRoute);
+        }
+    }
+    @DeleteMapping("delete")
+    public void deleteRoute(@RequestParam Long id) {
+        routeService.deleteRoute(id);
+        if (id == null){
+            throw new NullPointerException("parameter id can not be null");
+        }
     }
 
 }

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ITransportationRouteRepository extends JpaRepository<TransportationRoute, Long> {
+public interface IRouteRepository extends JpaRepository<TransportationRoute, Long> {
     List<TransportationRoute> findByTransportationCompany(String transportationCompany);
 }
