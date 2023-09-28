@@ -15,7 +15,6 @@ public class RouteController {
     @Autowired
     private RouteService routeService;
 
-    //TODO USERS can not create routes only ADMINS and PROVIDERS
     @PostMapping("create")
     public TransportationRoute createRoute(
             @RequestParam("arrivalPoint") String arrivalPoint,
@@ -102,6 +101,56 @@ public class RouteController {
             routeService.deleteRoute(id);
         }
     }
-    // TODO PROVIDERS can update their campaigns BUT only their own
+    @PatchMapping("update")
+    public TransportationRoute updateRoute(
+            @RequestParam("routeId") Long routeId,
+            @RequestParam("arrivalPoint") String arrivalPoint,
+            @RequestParam("departurePoint") String departurePoint,
+            @RequestParam("discountPrice") Double discountPrice,
+            @RequestParam("estimatedArrival") String estimatedArrival,
+            @RequestParam("transportationCompany") String transportationCompany,
+            @RequestParam("typeOfTransport") String typeOfTransport,
+            @RequestParam("estimatedDeparture") String estimatedDeparture,
+            @RequestParam("ticketPrice") Integer ticketPrice,
+            @RequestParam("accountName") String accountName){
 
+        TransportationRoute existingRoute = routeService.fetchRouteById(routeId);
+        if (existingRoute == null){
+            throw new IllegalArgumentException("No route with ID:"+routeId+" could be found");
+        }
+        if (!accountName.equals(transportationCompany)){
+            throw new IllegalArgumentException("User: "+accountName+" " +
+                    "is not allowed to alter a route created by "+transportationCompany);
+        } else {
+            if (!arrivalPoint.isEmpty()) {
+                existingRoute.setArrivalPoint(arrivalPoint);
+            }
+
+            if (!departurePoint.isEmpty()) {
+                existingRoute.setDeparturePoint(departurePoint);
+            }
+
+            if (discountPrice > 0) {
+                existingRoute.setDiscountPrice(discountPrice);
+            }
+
+            if (!estimatedArrival.isEmpty()) {
+                existingRoute.setEstimatedArrival(estimatedArrival);
+            }
+
+            if (!typeOfTransport.isEmpty()) {
+                existingRoute.setTypeOfTransport(typeOfTransport);
+            }
+
+            if (!estimatedDeparture.isEmpty()) {
+                existingRoute.setEstimatedDeparture(estimatedDeparture);
+            }
+
+            if (ticketPrice > 0) {
+                existingRoute.setTicketPrice(ticketPrice);
+            }
+
+        }
+        return routeService.updateRoute(existingRoute);
+    }
 }

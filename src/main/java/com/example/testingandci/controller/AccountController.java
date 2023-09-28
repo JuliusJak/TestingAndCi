@@ -17,7 +17,6 @@ public class AccountController {
     //TODO Check for valid params such as contact info, account type and payment info
     // contact info needs to be a valid email or 10 digits
     // payment info must be a SWISH account with a correct amount of digits
-    // account type can only be USER, ADMIN or PROVIDER
     @PostMapping("create")
     public Account saveAccount(
             @RequestParam("username") String username,
@@ -86,7 +85,7 @@ public class AccountController {
             existingAccount.setContactInfo(contactInfo);
         }
 
-        if (paymentInfo > 0) {
+        if (paymentInfo < 0) {
             existingAccount.setPaymentInfo(paymentInfo);
         } else {
             throw new IllegalArgumentException("PaymentInfo can not be a negative number or 0");

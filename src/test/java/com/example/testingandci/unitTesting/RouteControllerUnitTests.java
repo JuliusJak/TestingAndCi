@@ -1,6 +1,7 @@
 package com.example.testingandci.unitTesting;
 
 import com.example.testingandci.controller.RouteController;
+import com.example.testingandci.model.Account;
 import com.example.testingandci.model.TransportationRoute;
 import com.example.testingandci.service.RouteService;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,6 +227,65 @@ public class RouteControllerUnitTests {
             else {
             routeController.deleteRoute(userId);
             verify(routeService, times(1)).deleteRoute(userId);
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "1, New Arrival, New Departure, 15.0, New Arrival Time, CompanyA, Bus, New Departure Time, 10, CompanyA, true",
+            "2, New Arrival, New Departure, 15.0, New Arrival Time, CompanyB, Bus, New Departure Time, 10, CompanyB, false",
+            "1, , New Departure, 15.0, New Arrival Time, CompanyA, Bus, New Departure Time, 10, CompanyA, false"
+    })
+    public void testUpdateRoute(
+            Long routeId,
+            String arrivalPoint,
+            String departurePoint,
+            Double discountPrice,
+            String estimatedArrival,
+            String transportationCompany,
+            String typeOfTransport,
+            String estimatedDeparture,
+            Integer ticketPrice,
+            String accountName,
+            boolean validInput
+    ) {
+        if (validInput) {
+            TransportationRoute existingRoute = new TransportationRoute();
+            existingRoute.setRouteId(routeId);
+            existingRoute.setTransportationCompany(transportationCompany);
+
+            when(routeService.fetchRouteById(routeId)).thenReturn(existingRoute);
+            when(routeService.updateRoute(existingRoute)).thenReturn(existingRoute);
+
+            TransportationRoute updatedRoute = routeController.updateRoute(
+                    routeId,
+                    arrivalPoint,
+                    departurePoint,
+                    discountPrice,
+                    estimatedArrival,
+                    transportationCompany,
+                    typeOfTransport,
+                    estimatedDeparture,
+                    ticketPrice,
+                    accountName
+            );
+
+            assertNotNull(updatedRoute);
+        } else {
+            when(routeService.fetchRouteById(routeId)).thenReturn(null);
+
+            assertThrows(IllegalArgumentException.class, () -> routeController.updateRoute(
+                    routeId,
+                    arrivalPoint,
+                    departurePoint,
+                    discountPrice,
+                    estimatedArrival,
+                    transportationCompany,
+                    typeOfTransport,
+                    estimatedDeparture,
+                    ticketPrice,
+                    accountName
+            ));
         }
     }
 }
