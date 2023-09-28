@@ -60,14 +60,11 @@ public class AccountController {
             throw new AccountNotFoundException("Account with ID " + id + " not found");
         }
     }
-    // TODO can not update account type
-    // maybe update
     @PatchMapping("update/{id}")
     public Account updateAccount(
             @PathVariable long id,
             @RequestParam("username") String username,
             @RequestParam("contactInfo") String contactInfo,
-            @RequestParam("accountType") String accountType,
             @RequestParam("paymentInfo") int paymentInfo)
             throws AccountNotFoundException {
         Account existingAccount = accountService.fetchedAccount(id);
@@ -81,9 +78,7 @@ public class AccountController {
         if (!contactInfo.isEmpty()) {
             existingAccount.setContactInfo(contactInfo);
         }
-        if (!accountType.isEmpty()) {
-            existingAccount.setAccountType(accountType);
-        }
+
         if (paymentInfo > 0) {
             existingAccount.setPaymentInfo(paymentInfo);
         } else {

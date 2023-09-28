@@ -103,16 +103,16 @@ public class AccountControllerUnitTests {
 
     @ParameterizedTest
     @CsvSource({
-            "1, updatedUser, updated@example.com, USER, 200, true, 200",
-            "2, updatedUser, updated@example.com, USER, 200, false, 0",
-            "1, '', updated@example.com, ADMIN, 200, true, 200",
-            "1, updatedUser, '', ADMIN, 200, true, 200",
-            "2, updatedUser, updated@example.com, '', 200, true, 200",
-            "1, updatedUser, updated@example.com, ADMIN, 0, false, 0",
-            "1, updatedUser, updated@example.com, USER, -200, false, 0"
+            "1, updatedUser, updated@example.com, 200, true, 200",
+            "2, updatedUser, updated@example.com, 200, false, 0",
+            "1, '', updated@example.com, 200, true, 200",
+            "1, updatedUser, '', 200, true, 200",
+            "2, updatedUser, updated@example.com, 200, true, 200",
+            "1, updatedUser, updated@example.com, 0, false, 0",
+            "1, updatedUser, updated@example.com, -200, false, 0"
     })
     public void testUpdateAccount(
-            long accountId, String username, String contactInfo, String accountType, int paymentInfo,
+            long accountId, String username, String contactInfo, int paymentInfo,
             boolean accountExists, int expectedPaymentInfo) throws AccountNotFoundException {
 
         if (accountExists) {
@@ -120,20 +120,19 @@ public class AccountControllerUnitTests {
             existingAccount.setId(accountId);
             existingAccount.setUsername(username);
             existingAccount.setContactInfo(contactInfo);
-            existingAccount.setAccountType(accountType);
             existingAccount.setPaymentInfo(paymentInfo);
 
             when(accountServiceMocked.fetchedAccount(accountId)).thenReturn(existingAccount);
 
             when(accountServiceMocked.saveAccount(existingAccount)).thenReturn(existingAccount);
 
-            Account updatedAccount = accountController.updateAccount(accountId, username, contactInfo, accountType, paymentInfo);
+            Account updatedAccount = accountController.updateAccount(accountId, username, contactInfo, paymentInfo);
 
             assertEquals(expectedPaymentInfo, updatedAccount.getPaymentInfo());
         } else {
             when(accountServiceMocked.fetchedAccount(accountId)).thenReturn(null);
 
-            assertThrows(AccountNotFoundException.class, () -> accountController.updateAccount(accountId, username, contactInfo, accountType, paymentInfo));
+            assertThrows(AccountNotFoundException.class, () -> accountController.updateAccount(accountId, username, contactInfo, paymentInfo));
         }
     }
 
