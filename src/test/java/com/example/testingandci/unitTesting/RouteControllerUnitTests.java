@@ -3,7 +3,6 @@ package com.example.testingandci.unitTesting;
 import com.example.testingandci.controller.RouteController;
 import com.example.testingandci.model.TransportationRoute;
 import com.example.testingandci.service.RouteService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -28,10 +27,10 @@ public class RouteControllerUnitTests {
 
     @ParameterizedTest
     @CsvSource({
-            "Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            ", Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            "Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            ",,,,,,,,"
+            "Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, USER",
+            ", Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, ADMIN",
+            "Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, PROVIDER",
+            ",,,,,,,,,"
     })
     public void testCreateRoute(
             String arrivalPoint,
@@ -41,7 +40,9 @@ public class RouteControllerUnitTests {
             String transportationCompany,
             String typeOfTransport,
             String estimatedDeparture,
-            Integer ticketPrice) {
+            Integer ticketPrice,
+            String accountType) {
+
 
         if (arrivalPoint == null
                 || departurePoint == null
@@ -50,14 +51,21 @@ public class RouteControllerUnitTests {
                 || transportationCompany == null
                 || typeOfTransport == null
                 || estimatedDeparture == null
-                || ticketPrice == null) {
+                || ticketPrice == null
+                || accountType == null) {
 
-            assertThrows(NullPointerException.class, () -> routeController.createRoute(arrivalPoint, departurePoint,
-                    discountPrice, estimatedArrival, transportationCompany, typeOfTransport, estimatedDeparture, ticketPrice));
+            assertThrows(NullPointerException.class, () -> routeController.createRoute(
+                    arrivalPoint, departurePoint, discountPrice, estimatedArrival,
+                    transportationCompany, typeOfTransport, estimatedDeparture,
+                    ticketPrice, accountType));
         } else if (discountPrice <= 0 || ticketPrice <= 0){
             assertThrows(IllegalArgumentException.class, () -> routeController.createRoute(
                     arrivalPoint, departurePoint, discountPrice, estimatedArrival, transportationCompany,
-                    typeOfTransport, estimatedDeparture, ticketPrice));
+                    typeOfTransport, estimatedDeparture, ticketPrice, accountType));
+        } else if (accountType.equals("USER")){
+            assertThrows(IllegalArgumentException.class, () -> routeController.createRoute(
+                    arrivalPoint, departurePoint, discountPrice, estimatedArrival, transportationCompany,
+                    typeOfTransport, estimatedDeparture, ticketPrice, accountType));
         }
 
         else {
@@ -72,7 +80,8 @@ public class RouteControllerUnitTests {
                     transportationCompany,
                     typeOfTransport,
                     estimatedDeparture,
-                    ticketPrice
+                    ticketPrice,
+                    accountType
             );
 
             verify(routeService, times(1)).createNewRoute(any(TransportationRoute.class));
@@ -112,10 +121,10 @@ public class RouteControllerUnitTests {
 
     @ParameterizedTest
     @CsvSource({
-            "Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            ", Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            "Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            ",,,,,,,,"
+            "Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, USER",
+            ", Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, ADMIN",
+            "Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, PROVIDER",
+            ",,,,,,,,,"
     })    public void testGetRoutesByTransportationCompany(
             String arrivalPoint,
             String departurePoint,
@@ -124,7 +133,8 @@ public class RouteControllerUnitTests {
             String transportationCompany,
             String typeOfTransport,
             String estimatedDeparture,
-            Integer ticketPrice) {
+            Integer ticketPrice,
+            String accountType) {
 
         TransportationRoute transportationRoute = TransportationRoute.builder()
                 .arrivalPoint(arrivalPoint)
@@ -138,7 +148,7 @@ public class RouteControllerUnitTests {
         if (transportationCompany == null){
             assertThrows(NullPointerException.class, () -> routeController.createRoute(
                     arrivalPoint, departurePoint, discountPrice, estimatedArrival, transportationCompany,
-                    typeOfTransport, estimatedDeparture, ticketPrice));
+                    typeOfTransport, estimatedDeparture, ticketPrice,accountType));
         } else {
 
             when(routeService.getRoutesByTransportationCompany(transportationCompany)).thenReturn(sampleRoutes);
@@ -156,10 +166,10 @@ public class RouteControllerUnitTests {
     }
     @ParameterizedTest
     @CsvSource({
-            "1,Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            "2,, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            "3,Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100",
-            ",,,,,,,,,"
+            "1,Point A, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, USER",
+            "2,, Point B, 0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, ADMIN",
+            "3,Point A, Point B, -0.2, 2023-10-01, Company X, Bus, 2023-09-30, 100, PROVIDER",
+            ",,,,,,,,,,"
     })    public void testGetRoutesById(
             Long routeId,
             String arrivalPoint,
@@ -169,7 +179,8 @@ public class RouteControllerUnitTests {
             String transportationCompany,
             String typeOfTransport,
             String estimatedDeparture,
-            Integer ticketPrice) {
+            Integer ticketPrice,
+            String accountType) {
 
         TransportationRoute transportationRoute = TransportationRoute.builder()
                 .arrivalPoint(arrivalPoint)
@@ -185,7 +196,7 @@ public class RouteControllerUnitTests {
         if (routeId == null){
             assertThrows(NullPointerException.class, () -> routeController.createRoute(
                     arrivalPoint, departurePoint, discountPrice, estimatedArrival, transportationCompany,
-                    typeOfTransport, estimatedDeparture, ticketPrice));
+                    typeOfTransport, estimatedDeparture, ticketPrice, accountType));
         } else {
 
             when(routeService.fetchRouteById(routeId)).thenReturn(transportationRoute);

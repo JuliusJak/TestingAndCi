@@ -25,8 +25,12 @@ public class RouteController {
             @RequestParam("transportationCompany") String transportationCompany,
             @RequestParam("typeOfTransport") String typeOfTransport,
             @RequestParam("estimatedDeparture") String estimatedDeparture,
-            @RequestParam("ticketPrice") Integer ticketPrice) {
+            @RequestParam("ticketPrice") Integer ticketPrice,
+            @RequestParam("accountType") String accountType) {
 
+        if (accountType.equals("USER")){
+            throw new IllegalArgumentException("USERS do not have authority to create new routes");
+        }
         if (arrivalPoint == null
                 || departurePoint == null
                 || discountPrice == null
