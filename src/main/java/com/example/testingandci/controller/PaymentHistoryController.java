@@ -42,5 +42,12 @@ public class PaymentHistoryController {
         return null;
     }
 
-    //TODO delete payment
-}
+    @DeleteMapping("delete")
+    public void deletePayment(@RequestParam Long id) {
+
+        if (id == null){
+            throw new NullPointerException("parameter id can not be null");
+        } else {
+            paymentHistoryService.deletePayment(id);
+        }
+    }}

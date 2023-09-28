@@ -21,4 +21,8 @@ public class PaymentHistoryService implements IPaymentHistoryService{
     public PaymentHistory createPayment(PaymentHistory newPayment) {
         return repository.save(newPayment);
     }
+    @Override
+    public void deletePayment(Long paymentId){
+        repository.deleteById(paymentId);
+    }
 }

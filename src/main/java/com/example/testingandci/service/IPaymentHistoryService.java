@@ -7,6 +7,7 @@ import java.util.List;
 public interface IPaymentHistoryService {
     List<PaymentHistory> fetchPaymentHistory(Long accountId);
     PaymentHistory createPayment(PaymentHistory newPayment);
+    void deletePayment(Long paymentId);
 
 
 }
