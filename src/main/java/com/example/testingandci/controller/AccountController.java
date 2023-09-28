@@ -14,6 +14,10 @@ import javax.security.auth.login.AccountNotFoundException;
 public class AccountController {
     @Autowired
     private AccountService accountService;
+    //TODO Check for valid params such as contact info, account type and payment info
+    // contact info needs to be a valid email or 10 digits
+    // payment info must be a SWISH account with a correct amount of digits
+    // account type can only be USER, ADMIN or PROVIDER
     @PostMapping("create")
     public Account saveAccount(
             @RequestParam("username") String username,
@@ -56,6 +60,8 @@ public class AccountController {
             throw new AccountNotFoundException("Account with ID " + id + " not found");
         }
     }
+    // TODO can not update account type
+    // maybe update
     @PatchMapping("update/{id}")
     public Account updateAccount(
             @PathVariable long id,

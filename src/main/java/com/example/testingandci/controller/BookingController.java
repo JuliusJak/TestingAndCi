@@ -28,8 +28,8 @@ public class BookingController {
                 .routeId(routeId)
                 .build();
 
-        // if routeId != routes that exists or route is not currently available throw exception
-        //add some edgecases
+        //TODO if routeId != routes that exists or route is not currently available throw exception
+        // add some edgecases
         paymentHistoryController.autoCreatePayment(userId, routeId);
         return activeBookingService.createNewBooking(activeBookings);
     }

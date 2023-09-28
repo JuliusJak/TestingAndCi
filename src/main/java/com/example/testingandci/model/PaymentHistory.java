@@ -22,3 +22,5 @@ public class PaymentHistory {
     private String username;
     private long routeId;
 }
+
+// TODO add date for when payment happened

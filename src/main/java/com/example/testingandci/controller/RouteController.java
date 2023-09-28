@@ -15,6 +15,7 @@ public class RouteController {
     @Autowired
     private RouteService routeService;
 
+    //TODO USERS can not create routes only ADMINS and PROVIDERS
     @PostMapping("create")
     public TransportationRoute createRoute(
             @RequestParam("arrivalPoint") String arrivalPoint,
@@ -87,6 +88,7 @@ public class RouteController {
             return ResponseEntity.ok(transportationRoute);
         }
     }
+    // TODO get routes by destination and starting point
     @DeleteMapping("delete")
     public void deleteRoute(@RequestParam Long id) {
 
@@ -96,5 +98,6 @@ public class RouteController {
             routeService.deleteRoute(id);
         }
     }
+    // TODO PROVIDERS can update their campaigns BUT only their own
 
 }

@@ -14,7 +14,7 @@ public class PaymentHistoryController {
     @Autowired
     private AccountService accountService;
 
-    //Add edgecases
+    //TODO Add edgecases
     public void autoCreatePayment(long userId, long routeId){
 
         String username = accountService.fetchedAccount(userId).getUsername();
@@ -35,10 +35,12 @@ public class PaymentHistoryController {
         autoCreatePayment(userId,routeId);
 
     }
-
+    // TODO finish getHistoryById
     @GetMapping("get/id")
-    public PaymentHistory getHistoryByID(
+    public PaymentHistory getHistoryById(
             @RequestParam("userId") Long userId){
         return null;
     }
+
+    //TODO delete payment
 }

@@ -24,3 +24,5 @@ public class TransportationRoute {
     private String transportationCompany;
     private double discountPrice;
 }
+// TODO maybe add a limited amount of tickets/bookings that can be sold/created per route
+// TODO create some dummy routes by different PROVIDERS
