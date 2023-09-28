@@ -25,6 +25,7 @@ public class AccountController {
             @RequestParam("accountType") String accountType,
             @RequestParam("paymentInfo") Integer paymentInfo) {
 
+
         if (username == null
                 || contactInfo == null
                 || accountType == null
@@ -40,8 +41,9 @@ public class AccountController {
 
         } else if (paymentInfo <= 0) {
             throw new IllegalArgumentException("PaymentInfo must be greater than 0");
+        } else if (!isValidAccountType(accountType)) {
+            throw new IllegalArgumentException("AccountType must be either USER, ADMIN or PROVIDER");
         }
-
 
         Account account = Account.builder()
                 .username(username)
@@ -50,6 +52,11 @@ public class AccountController {
                 .paymentInfo(paymentInfo)
                 .build();
         return accountService.saveAccount(account);
+    }
+    public boolean isValidAccountType(String accountType) {
+        return "USER".equals(accountType)
+                || "ADMIN".equals(accountType)
+                || "PROVIDER".equals(accountType);
     }
     @GetMapping("get/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable long id) throws AccountNotFoundException {

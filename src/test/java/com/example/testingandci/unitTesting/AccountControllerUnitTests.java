@@ -59,7 +59,7 @@ public class AccountControllerUnitTests {
     @ParameterizedTest
     @CsvSource({
             "test,,,",
-            "john_doe,john@example.com,premium,-100"})
+            "john_doe,john@example.com,USER,-100"})
     public void testSaveAccountWithInvalidParametersController(
             String username,
             String contactInfo,
@@ -71,7 +71,11 @@ public class AccountControllerUnitTests {
                 || accountType == null
                 || paymentInfo == null) {
             assertThrows(NullPointerException.class, () -> accountController.saveAccount(username, contactInfo, accountType, paymentInfo));
-        } else {
+        } else if (!accountController.isValidAccountType(accountType)){
+            assertThrows(IllegalArgumentException.class, () ->
+                    accountController.saveAccount(username,contactInfo,accountType,paymentInfo));
+        }
+        else {
             assertThrows(IllegalArgumentException.class, () -> accountController.saveAccount(username, contactInfo, accountType, paymentInfo));
         }
     }
