@@ -60,7 +60,11 @@ public class AccountControllerUnitTests {
     @CsvSource({
             "test,,,",
             "john_doe,john@example.com,premium,-100"})
-    public void testSaveAccountWithInvalidParametersController(String username, String contactInfo, String accountType, Integer paymentInfo) {
+    public void testSaveAccountWithInvalidParametersController(
+            String username,
+            String contactInfo,
+            String accountType,
+            Integer paymentInfo) {
 
         if (username == null
                 || contactInfo == null

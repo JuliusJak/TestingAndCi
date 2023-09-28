@@ -16,6 +16,10 @@ public class PaymentHistoryService implements IPaymentHistoryService{
     public List<PaymentHistory> fetchPaymentHistory(Long accountId) {
         return repository.findAllByAccountId(accountId);
     }
+    @Override
+    public PaymentHistory fetchPaymentHistoryById(Long accountId) {
+        return repository.findById(accountId).orElse(null);
+    }
 
     @Override
     public PaymentHistory createPayment(PaymentHistory newPayment) {

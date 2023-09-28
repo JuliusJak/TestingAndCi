@@ -1,10 +1,16 @@
 package com.example.testingandci.controller;
 
+import com.example.testingandci.exceptions.PaymentNotFoundException;
+import com.example.testingandci.model.Account;
 import com.example.testingandci.model.PaymentHistory;
 import com.example.testingandci.service.AccountService;
 import com.example.testingandci.service.PaymentHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.security.auth.login.AccountNotFoundException;
 
 @RestController
 @RequestMapping("payment/")
@@ -35,11 +41,15 @@ public class PaymentHistoryController {
         autoCreatePayment(userId,routeId);
 
     }
-    // TODO finish getHistoryById
     @GetMapping("get/id")
-    public PaymentHistory getHistoryById(
-            @RequestParam("userId") Long userId){
-        return null;
+    public ResponseEntity<PaymentHistory> getHistoryById(
+            @RequestParam("userId") Long userId) throws PaymentNotFoundException {
+        PaymentHistory paymentHistory = paymentHistoryService.fetchPaymentHistoryById(userId);
+        if (paymentHistory != null) {
+            return ResponseEntity.ok(paymentHistory);
+        } else {
+            throw new PaymentNotFoundException("Payment with ID " + userId + " not found");
+        }
     }
 
     @DeleteMapping("delete")
