@@ -85,7 +85,7 @@ public class AccountController {
             existingAccount.setContactInfo(contactInfo);
         }
 
-        if (paymentInfo < 0) {
+        if (paymentInfo > 0) {
             existingAccount.setPaymentInfo(paymentInfo);
         } else {
             throw new IllegalArgumentException("PaymentInfo can not be a negative number or 0");

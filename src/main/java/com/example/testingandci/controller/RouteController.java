@@ -25,7 +25,8 @@ public class RouteController {
             @RequestParam("typeOfTransport") String typeOfTransport,
             @RequestParam("estimatedDeparture") String estimatedDeparture,
             @RequestParam("ticketPrice") Integer ticketPrice,
-            @RequestParam("accountType") String accountType) {
+            @RequestParam("accountType") String accountType) //accountType is needed so USER can't create a route
+    {
 
         if (accountType.equals("USER")){
             throw new IllegalArgumentException("USERS do not have authority to create new routes");

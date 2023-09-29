@@ -1,8 +1,10 @@
 package com.example.testingandci.unitTesting;
 
 import com.example.testingandci.controller.BookingController;
+import com.example.testingandci.controller.PaymentHistoryController;
 import com.example.testingandci.model.Account;
 import com.example.testingandci.model.ActiveBookings;
+import com.example.testingandci.model.PaymentHistory;
 import com.example.testingandci.service.AccountService;
 import com.example.testingandci.service.ActiveBookingService;
 import com.example.testingandci.service.PaymentHistoryService;
@@ -27,6 +29,8 @@ import static org.mockito.Mockito.*;
 public class BookingControllerUnitTests {
 
     @Mock
+    private PaymentHistoryController paymentHistoryController;
+    @Mock
     private ActiveBookingService activeBookingService;
     @InjectMocks
     private BookingController bookingController;
@@ -43,6 +47,7 @@ public class BookingControllerUnitTests {
         when(activeBookingService.createNewBooking(any(ActiveBookings.class)))
                 .thenReturn(expectedBooking);
 
+        PaymentHistory paymentHistory = paymentHistoryController.autoCreatePayment(userId, routeId);
         ActiveBookings actualBooking = bookingController.createBooking(userId, routeId);
 
         verify(activeBookingService, times(1)).createNewBooking(any(ActiveBookings.class));

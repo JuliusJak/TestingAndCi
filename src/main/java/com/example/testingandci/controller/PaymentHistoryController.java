@@ -21,7 +21,8 @@ public class PaymentHistoryController {
     private AccountService accountService;
 
     //TODO Add edgecases
-    public void autoCreatePayment(long userId, long routeId){
+    // add mocked payment response
+    public PaymentHistory autoCreatePayment(long userId, long routeId){
 
         String username = accountService.fetchedAccount(userId).getUsername();
 
@@ -31,15 +32,16 @@ public class PaymentHistoryController {
                 .username(username)
                 .build();
         paymentHistoryService.createPayment(newPayment);
+        return newPayment;
     }
 
     @PostMapping("create")
-    public void createPayment(
+    public PaymentHistory createPayment(
             @RequestParam("userId") Long userId,
             @RequestParam("routeId") Long routeId){
 
-        autoCreatePayment(userId,routeId);
 
+        return autoCreatePayment(userId, routeId);
     }
     @GetMapping("get/id")
     public ResponseEntity<PaymentHistory> getHistoryById(
