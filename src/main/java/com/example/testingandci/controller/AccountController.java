@@ -3,7 +3,6 @@ package com.example.testingandci.controller;
 import com.example.testingandci.model.Account;
 import com.example.testingandci.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +13,7 @@ import javax.security.auth.login.AccountNotFoundException;
 public class AccountController {
     @Autowired
     private AccountService accountService;
-    //TODO Check for valid params such as contact info, account type and payment info
-    // contact info needs to be a valid email or 10 digits
-    // payment info must be a SWISH account with a correct amount of digits
+
     @PostMapping("create")
     public Account saveAccount(
             @RequestParam("username") String username,

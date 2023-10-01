@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -92,7 +91,6 @@ public class RouteController {
             return ResponseEntity.ok(transportationRoute);
         }
     }
-    // TODO get routes by destination and starting point
     @DeleteMapping("delete")
     public void deleteRoute(@RequestParam Long id) {
 
