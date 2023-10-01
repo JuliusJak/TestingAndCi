@@ -2,12 +2,9 @@ package com.example.testingandci.unitTesting;
 
 import com.example.testingandci.controller.BookingController;
 import com.example.testingandci.controller.PaymentHistoryController;
-import com.example.testingandci.model.Account;
 import com.example.testingandci.model.ActiveBookings;
 import com.example.testingandci.model.PaymentHistory;
-import com.example.testingandci.service.AccountService;
 import com.example.testingandci.service.ActiveBookingService;
-import com.example.testingandci.service.PaymentHistoryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class BookingControllerUnitTests {
+public class BookingControllerTests {
 
     @Mock
     private PaymentHistoryController paymentHistoryController;
@@ -36,7 +34,7 @@ public class BookingControllerUnitTests {
     private BookingController bookingController;
 
     @Test
-    public void testCreateBooking() {
+    public void testCreateBooking() throws AccountNotFoundException {
         long userId = 1L;
         long routeId = 2L;
         ActiveBookings expectedBooking = ActiveBookings.builder()

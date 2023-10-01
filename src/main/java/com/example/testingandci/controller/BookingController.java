@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class BookingController {
     @PostMapping("create")
     public ActiveBookings createBooking(
             @RequestParam("userId") long userId,
-            @RequestParam("routeId") long routeId) {
+            @RequestParam("routeId") long routeId) throws AccountNotFoundException {
 
 
         ActiveBookings activeBookings = ActiveBookings.builder()

@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PaymentHistoryControllerUitTests {
+public class PaymentHistoryControllerTests {
 
     @Mock
     private PaymentHistoryService paymentHistoryService;
@@ -35,7 +35,7 @@ public class PaymentHistoryControllerUitTests {
 
 
     @Test
-    public void testCreatePayment() {
+    public void testCreatePayment() throws AccountNotFoundException {
 
         long userId = 1L;
         long routeId = 2L;

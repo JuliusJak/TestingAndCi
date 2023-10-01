@@ -1,7 +1,6 @@
 package com.example.testingandci.unitTesting;
 
 import com.example.testingandci.controller.RouteController;
-import com.example.testingandci.model.Account;
 import com.example.testingandci.model.TransportationRoute;
 import com.example.testingandci.service.RouteService;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RouteControllerUnitTests {
+public class RouteControllerTests {
     @Mock
     private RouteService routeService;
     @InjectMocks

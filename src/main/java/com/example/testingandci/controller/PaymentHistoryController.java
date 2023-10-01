@@ -22,15 +22,21 @@ public class PaymentHistoryController {
 
     //TODO Add edgecases
     // add mocked payment response
-    public PaymentHistory autoCreatePayment(long userId, long routeId){
+    public PaymentHistory autoCreatePayment(long userId, long routeId) throws AccountNotFoundException {
+        Account account = accountService.fetchedAccount(userId);
 
-        String username = accountService.fetchedAccount(userId).getUsername();
+        if (account == null) {
+            throw new AccountNotFoundException("Account not found for userId: " + userId);
+        }
+
+        String username = account.getUsername();
 
         PaymentHistory newPayment = PaymentHistory.builder()
                 .accountId(userId)
                 .routeId(routeId)
                 .username(username)
                 .build();
+
         paymentHistoryService.createPayment(newPayment);
         return newPayment;
     }
@@ -38,7 +44,7 @@ public class PaymentHistoryController {
     @PostMapping("create")
     public PaymentHistory createPayment(
             @RequestParam("userId") Long userId,
-            @RequestParam("routeId") Long routeId){
+            @RequestParam("routeId") Long routeId) throws AccountNotFoundException {
 
 
         return autoCreatePayment(userId, routeId);
